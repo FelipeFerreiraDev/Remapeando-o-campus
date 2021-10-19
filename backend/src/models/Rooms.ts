@@ -11,6 +11,9 @@ export default class Rooms {
     name: string;
 
     @Column()
+    nameShow: string;
+
+    @Column()
     campus: string;
 
     @Column()
@@ -30,4 +33,10 @@ export default class Rooms {
     })
     @JoinColumn({ name: 'room_id' })
     images: Image[];
+
+    @Column()
+    link: string;
+
+    @Column()
+    piso: number;
 }

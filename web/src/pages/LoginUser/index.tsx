@@ -5,20 +5,16 @@ import { FormEvent, useState } from "react";
 
 import { Context } from '../../Context/AuthContext';
 import { useContext } from 'react';
-
+import { useEffect } from 'react'
 import { useHistory } from 'react-router-dom';
 
 export function LoginUser() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const { authenticated, handleLogin, handleLogout } = useContext(Context);
-
+  const [submit, setSubmit] = useState(false);
   const history = useHistory();
-
-  function validateEmail(email: string) {
-    const re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-    return re.test(email);
-  }
+  const [type, setType] = useState('password');
 
   async function check(aux: string) {
     if (aux === "email") {
@@ -53,7 +49,7 @@ export function LoginUser() {
 
   async function handleSubmit(event: FormEvent) {
     let index = 0;
-    if (validateEmail(email)) {
+    if (email !== "") {
       index += 1
     } else {
       const element = document.getElementById('name')!;
@@ -63,25 +59,27 @@ export function LoginUser() {
       status.style.display = "flex";
     }
 
-    if (password.length >= 7) {
+    if (password !== "") {
       index += 1
     } else {
       const element = document.getElementById('senha')!;
       element.style.border = "1px solid red";
       const status = document.getElementById('statusSenha')!;
-      status.innerHTML = "* Mínimo de 7 caracteres";
+      status.innerHTML = "* Senha inválida";
       status.style.display = "flex";
     }
     event.preventDefault();
-    handleLogin(email, password);
 
     if (index === 2){
       handleLogin(email, password);
-      if(authenticated === false){
-        const status = document.getElementById('status')!;
-        status.innerHTML = "Login inválido";
-        status.style.display = "flex";
-      }
+    }
+    setSubmit(true)
+    const status = document.getElementById('status')!;
+    if(authenticated === false){
+      status.innerHTML = "Login inválido";
+      status.style.display = "flex";
+    }else{
+      status.style.display = "none";
     }
   }
 
@@ -90,6 +88,21 @@ export function LoginUser() {
     history.push('/');
   }
 
+  function handleShowPassword() {
+    const eye = document.getElementById('eye')!;
+    const eyeSlash = document.getElementById('eye-slash')!;
+    if(type==='password') {
+      eye.style.display = "none"
+      eyeSlash.style.display = "block"
+      setType('text')
+    } else {
+      eyeSlash.style.display = "none"
+      eye.style.display = "block"
+      setType('password')
+    }
+  }
+
+  
   return (
     <div id="page-create-room">
       <main>
@@ -110,10 +123,13 @@ export function LoginUser() {
               </>
             ) : null
           }
-          <fieldset>
-            <legend>Login de usuário</legend>
 
-            <div className="input-block">
+
+          {
+            authenticated === false ?
+            <fieldset>
+              <legend>Login de usuário</legend>
+              <div className="input-block">
               <div className="statusContainer">
                 <label htmlFor="name">Email</label>
                 <div id="statusEmail" className="status">status</div>
@@ -126,27 +142,33 @@ export function LoginUser() {
                 onChange={e => {setEmail(e.target.value)}}
                 onSelect={() => check("email")}
               />
-            </div>
-            <div className="input-block">
+              </div>
+              <div className="input-block">
               <div className="statusContainer">
                 <label htmlFor="name">Senha</label>
                 <div id="statusSenha" className="status">status</div>
               </div>
-              <input
-                type="text"
-                placeholder="Digite a sua senha"
-                id="senha"
-                value={password}
-                onChange={e => {setPassword(e.target.value)}}
-                onSelect={() => check("senha")}
-
-              />
-            </div>
-          </fieldset>
-          <div id="status" className="statusCenter">status</div>
-          <button className="confirm-button" type="submit">
-            Confirmar
-          </button>
+              
+              <div className="showpass">
+                <input
+                  type={type}
+                  placeholder="Digite a sua senha"
+                  id="senha"
+                  value={password}
+                  onChange={e => {setPassword(e.target.value)}}
+                  onSelect={() => check("senha")}
+                />
+                <span id="eye" className="fa fa-lg fa-eye field-icon toggle-password" onClick={handleShowPassword}></span>
+                <span id="eye-slash" style={{display: "none"}} className="fa fa-lg fa-eye-slash field-icon toggle-password" onClick={handleShowPassword}></span>
+                </div>
+              </div>
+              <div id="status" className="statusCenter">status</div>
+              <button className="confirm-button" type="submit">
+                Confirmar
+              </button>
+              </fieldset>
+            : null
+          }
 
           {
             authenticated ? (

@@ -23,25 +23,6 @@ aside.app-sidebar {
     max-width: 150px;
 }
 
-aside.app-sidebar footer a,
-aside.app-sidebar footer button {
-    width: 48px;
-    height: 48px;
-    border: 0;
-    background: #46609c;
-    border-radius: 16px;
-    cursor: pointer;
-    transition: filter 0.2s;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-aside.app-sidebar footer a:hover,
-aside.app-sidebar footer button:hover {
-    filter: brightness(0.8);
-}
-
 aside.app-sidebar-adm {
     position: fixed;
     height: 100%;
@@ -54,25 +35,7 @@ aside.app-sidebar-adm {
     box-shadow: 0 5px 10px rgba(0, 0, 0, 0.5), 0 0 1em rgba(0, 0, 0, 0.22);
 }
 
-aside.app-sidebar-adm footer a,
-aside.app-sidebar-adm footer button {
-    width: 48px;
-    height: 48px;
-    border: 0;
-    background-color: #46609c;
-    border-radius: 16px;
-    margin-bottom: 24%;
-    margin-left: 31%;
-    cursor: pointer;
-    transition: filter 0.2s;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    position: absolute;
-    bottom: 0;
-}
-
-aside.app-sidebar-adm a.icon2 {
+aside.app-sidebar-adm p.icon2 {
     display: block;
     width: 48px;
     height: 48px;
@@ -86,17 +49,17 @@ aside.app-sidebar-adm a.icon2 {
     align-items: center;
     position: absolute;
     bottom: 7%;
-}
-
-aside.app-sidebar-adm footer a:hover,
-aside.app-sidebar-adm footer button:hover {
-    filter: brightness(0.8);
+    transition: all 0.3s cubic-bezier(.25, .8, .25, 1);
 }
 
 .button-img {
     background-color: transparent;
     border-color: transparent;
     cursor: pointer;
+}
+
+aside.app-sidebar-adm p.icon2:hover {
+    background-color: #183883;
 }
 
 .button2 {
@@ -157,28 +120,12 @@ aside.app-sidebar-adm footer button:hover {
         box-shadow: 0 5px 10px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.22);
     }
     .button-img {
+        margin-top: 15px;
         display: flex;
         flex-direction: row;
         justify-content: none;
         align-items: none;
         width: 50px;
-    }
-    aside.app-sidebar footer a,
-    aside.app-sidebar footer button {
-        height: 2rem;
-        background-color: #46609c;
-        border-radius: 5px;
-        cursor: pointer;
-        transition: filter 0.2s;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        font-size: 15px;
-        width: 50px;
-        right: 3%;
-        bottom: 27%;
-        margin-bottom: 0%;
-        margin-left: 0%;
     }
     aside.app-sidebar-adm {
         position: absolute;
@@ -191,24 +138,6 @@ aside.app-sidebar-adm footer button:hover {
         justify-content: none;
         align-items: center;
         box-shadow: 0 5px 10px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.22);
-    }
-    aside.app-sidebar-adm footer a,
-    aside.app-sidebar-adm footer button {
-        height: 2rem;
-        background-color: #46609c;
-        border-radius: 5px;
-        cursor: pointer;
-        transition: filter 0.2s;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        position: absolute;
-        font-size: 15px;
-        width: 50px;
-        right: 3%;
-        bottom: 27%;
-        margin-bottom: 0%;
-        margin-left: 0%;
     }
     .button2 {
         position: relative;
@@ -240,7 +169,7 @@ aside.app-sidebar-adm footer button:hover {
         margin-left: 10px;
         transition: all 0.3s cubic-bezier(.25, .8, .25, 1);
     }
-    aside.app-sidebar-adm a.icon2 {
+    aside.app-sidebar-adm p.icon2 {
         height: 30px;
         position: absolute;
         right: 10px;

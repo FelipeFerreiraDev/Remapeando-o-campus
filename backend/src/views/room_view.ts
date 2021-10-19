@@ -7,12 +7,15 @@ export default {
         return {
             id: room.id,
             name: room.name,
+            nameShow: room.nameShow,
             type: room.type,
             campus: room.campus,
             latitude: room.latitude,
             longitude: room.longitude,
             description: room.description,
-            image: imagesView.renderMany(room.images)
+            image: imagesView.renderMany(room.images),
+            link: room.link,
+            piso: room.piso
         };
     },
 

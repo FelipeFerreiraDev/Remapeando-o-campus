@@ -7,7 +7,7 @@ import iconMap from '../../assets/MapIcon.png';
 import { removerAcentos } from '../../components/TextFunctions/index'
 import './style.css';
 import { SidebarCreate } from '../../components/Sidebar';
-import { ChangeEvent, FormEvent, useState } from 'react';
+import { ChangeEvent, FormEvent, useEffect, useState } from 'react';
 import api from '../../services/api';
 
 const happyMapIcon = L.icon({
@@ -24,11 +24,44 @@ export function CreateRoom() {
   const [name, setName] = useState('');
   const [campus, setCampus] = useState('');
   const [type, setType] = useState('');
+  const [piso, setPiso] = useState(0);
   const [description, setDescription] = useState('');
   const [images, setImages] = useState<File[]>([]);
   const [previewImages, setPreviewImages] = useState<string[]>([]);
+  const [link, setLink] = useState('');
+  const [latitudeUser, setLatitudeUser] = useState('');
+  const [longitudeUser, setLongitudeUser] = useState('');
 
+  useEffect(() => {
+    if(campus=== ''){
+      getLocation();
+    } else {
+      if(campus === 'bandeirantes') {
+        setLatitudeUser('-23.108');
+        setLongitudeUser('-50.3594239');
+      } else if(campus === 'cornelio') {
+        setLatitudeUser('-23.1747224');
+        setLongitudeUser('-50.6700414');
+      } else if(campus === 'jacarezinho') {
+        setLatitudeUser('-23.1497471');
+        setLongitudeUser('-49.9795701');
+      }
+    }
+    
+  }, [campus]);
 
+  function getLocation() {
+    if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(showPosition);
+    }
+  }
+
+  function showPosition(position: any) {
+    setLatitudeUser(position.coords.latitude);
+    setLongitudeUser(position.coords.longitude);
+  }
+
+  
   function handleMapClick(event: LeafletMouseEvent) {
     check("map")
 
@@ -63,6 +96,15 @@ export function CreateRoom() {
     const data = new FormData();
 
 
+    if (link === "") {
+      index += 1;
+      const element = document.getElementById('link')!;
+      element.style.border = "1px solid red";
+      const status = document.getElementById('statusLink')!;
+      status.innerHTML = "* Campo obrigatório";
+      status.style.display = "flex";
+    }
+
 
     if (name === "") {
       index += 1;
@@ -90,6 +132,16 @@ export function CreateRoom() {
       status.innerHTML = "* Campo obrigatório";
       status.style.display = "flex";
     }
+
+    if (piso === 0) {
+      index += 1;
+      const element = document.getElementById('piso')!;
+      element.style.border = "1px solid red";
+      const status = document.getElementById('statusPiso')!;
+      status.innerHTML = "* Campo obrigatório";
+      status.style.display = "flex";
+    }
+
 
     if (description === "") {
       index += 1;
@@ -134,11 +186,14 @@ export function CreateRoom() {
     })
     if (index === 0) {
       data.append('name', removerAcentos(name));
+      data.append('nameShow', name)
       data.append('campus', removerAcentos(campus));
       data.append('type', (type));
       data.append('description', description);
       data.append('latitude', String(latitude));
       data.append('longitude', String(longitude));
+      data.append('link', link);
+      data.append('piso', String(piso));
       images.forEach(image => {
         data.append('images', image);
       })
@@ -187,6 +242,21 @@ export function CreateRoom() {
       }
     }
 
+    if (aux === "link") {
+      if (link === "") {
+        const element = document.getElementById("link")!;
+        element.style.border = "1px solid red";
+        const status = document.getElementById('statusLink')!;
+        status.innerHTML = "* Campo obrigatório";
+        status.style.display = "flex";
+      } else {
+        const element = document.getElementById('link')!;
+        element.style.border = "1px solid #d3e2e5";
+        const status = document.getElementById('statusLink')!;
+        status.style.display = "none";
+      }
+    }
+
     if (aux === "map") {
       const status = document.getElementById('statusMap')!;
       status.style.display = "none";
@@ -200,6 +270,13 @@ export function CreateRoom() {
       const element = document.getElementById('type')!;
       element.style.border = "1px solid #d3e2e5";
       const status = document.getElementById('statusType')!;
+      status.style.display = "none";
+    }
+
+    if (aux === "piso") {
+      const element = document.getElementById('piso')!;
+      element.style.border = "1px solid #d3e2e5";
+      const status = document.getElementById('statusPiso')!;
       status.style.display = "none";
     }
 
@@ -219,38 +296,6 @@ export function CreateRoom() {
         <form className="create-room-form" onSubmit={handleSubmit}>
           <fieldset>
             <legend>Cadastrar Sala</legend>
-
-            <div className="input-block">
-              <div className="statusContainer">
-                <label htmlFor="name">Localização da Sala</label>
-                <div id="statusMap" className="status">status</div>
-              </div>
-            </div>
-            <Map
-              center={[-23.108, -50.3594239]}
-              style={{ width: '100%', height: 280 }}
-              zoom={15}
-              onclick={handleMapClick}
-            >
-              <TileLayer
-                url={`https://api.mapbox.com/styles/v1/mapbox/satellite-streets-v11/tiles/256/{z}/{x}/{y}@2x?access_token=${process.env.REACT_APP_MAPBOX_TOKEN}`}
-              />
-
-              {
-                position.latitude !== 0 ?
-                  <Marker interactive={false} icon={happyMapIcon} position={[position.latitude, position.longitude]} /> :
-                  null
-              }
-
-            </Map>
-
-            <div className="input-block">
-              <div className="statusContainer">
-                <label htmlFor="name">Nome da Sala</label>
-                <div id="statusName" className="status">status</div>
-              </div>
-              <input type="text" placeholder="Digite o nome da sala" id="name" value={name} onSelect={() => check("name")} onChange={e => setName(e.target.value)} />
-            </div>
 
             <div className="input-block">
               <div className="statusContainer">
@@ -275,6 +320,45 @@ export function CreateRoom() {
               </div>
             </div>
 
+            <div className="input-block">
+              <div className="statusContainer">
+                <label htmlFor="name">Localização da Sala</label>
+                <div id="statusMap" className="status">status</div>
+              </div>
+            </div>
+            <Map
+              center={[Number(latitudeUser), Number(longitudeUser)]}
+              style={{ width: '100%', height: 280 }}
+              zoom={15}
+              onclick={handleMapClick}
+            >
+              <TileLayer
+                url={`https://api.mapbox.com/styles/v1/mapbox/satellite-streets-v11/tiles/256/{z}/{x}/{y}@2x?access_token=${process.env.REACT_APP_MAPBOX_TOKEN}`}
+              />
+
+              {
+                position.latitude !== 0 ?
+                  <Marker interactive={false} icon={happyMapIcon} position={[position.latitude, position.longitude]} /> :
+                  null
+              }
+
+            </Map>
+
+            <div className="input-block">
+              <div className="statusContainer">
+                <label htmlFor="name">Nome da Sala</label>
+                <div id="statusName" className="status">status</div>
+              </div>
+              <input type="text" placeholder="Digite o nome da sala" id="name" value={name} onSelect={() => check("name")} onChange={e => setName(e.target.value)} />
+            </div>
+            
+            <div className="input-block">
+              <div className="statusContainer">
+                <label htmlFor="about">Descrição<span>Máximo de 300 caracteres</span></label>
+                <div id="statusDescription" className="status">status</div>
+              </div>
+              <textarea placeholder="Deixe aqui uma descrição sobre a sala" id="description" maxLength={300} value={description} onSelect={() => check("description")} onChange={e => setDescription(e.target.value)} />
+            </div>
 
             <div className="input-block">
               <div className="statusContainer">
@@ -307,8 +391,8 @@ export function CreateRoom() {
                 <p style={{marginLeft: "5px", color: "#5c8599", marginRight: "40px"}}>Auditório</p>
                 </div>
                 <div>
-                <input type="radio" value="clínica veterinária" name="radioType" onChange={e => { setType(e.target.value)}}/>
-                <p style={{marginLeft: "5px", color: "#5c8599", marginRight: "40px"}}>Clínica Veterinária</p>
+                <input type="radio" value="clínica" name="radioType" onChange={e => { setType(e.target.value)}}/>
+                <p style={{marginLeft: "5px", color: "#5c8599", marginRight: "40px"}}>Clínica</p>
                 </div>
                 <div>
                 <input type="radio" value="lanchonete" name="radioType" onChange={e => { setType(e.target.value)}}/>
@@ -318,15 +402,36 @@ export function CreateRoom() {
                 <input type="radio" value="lazer" name="radioType" onChange={e => { setType(e.target.value)}}/>
                 <p style={{marginLeft: "5px", color: "#5c8599", marginRight: "40px"}}>Lazer</p>
                 </div>
+                <div>
+                <input type="radio" value="evento" name="radioType" onChange={e => { setType(e.target.value)}}/>
+                <p style={{marginLeft: "5px", color: "#5c8599", marginRight: "40px"}}>Evento</p>
+                </div>
+                <div>
+                <input type="radio" value="acessibilidade" name="radioType" onChange={e => { setType(e.target.value)}}/>
+                <p style={{marginLeft: "5px", color: "#5c8599", marginRight: "40px"}}>Acessibilidade</p>
+                </div>
               </div>
             </div>
-            
+
             <div className="input-block">
               <div className="statusContainer">
-                <label htmlFor="about">Descrição<span>Máximo de 300 caracteres</span></label>
-                <div id="statusDescription" className="status">status</div>
+                <label htmlFor="piso">Selecione o piso da sala</label>
+                <div id="statusPiso" className="status">status</div>
               </div>
-              <textarea placeholder="Deixe aqui uma descrição sobre a sala" id="description" maxLength={300} value={description} onSelect={() => check("description")} onChange={e => setDescription(e.target.value)} />
+              <div id="piso" className="input-radio" onChange={()=>{check("piso")}}>
+                <div>
+                  <input type="radio" name="radioType" onChange={e => { setPiso(1)}}/>
+                  <p style={{marginLeft: "5px", color: "#5c8599", marginRight: "40px"}}>Piso 1</p>
+                </div>
+                <div>
+                <input type="radio" name="radioType" onChange={e => { setPiso(2)}}/>
+                <p style={{marginLeft: "5px", color: "#5c8599", marginRight: "40px"}}>Piso 2</p>
+                </div>
+                <div>
+                <input type="radio" name="radioType" onChange={e => { setPiso(3)}}/>
+                <p style={{marginLeft: "5px", color: "#5c8599", marginRight: "40px"}}>Piso 3</p>
+                </div>
+              </div>
             </div>
 
             <div className="input-block">
@@ -348,6 +453,14 @@ export function CreateRoom() {
 
               <input multiple onChange={handleSelectImage} type="file" name="" id="image[]" />
 
+            </div>
+
+            <div className="input-block">
+              <div className="statusContainer">
+                <label htmlFor="link">Link</label>
+                <div id="statusLink" className="status">status</div>
+              </div>
+              <input type="text" placeholder="Digite o link da imagem" id="link" value={link} onChange={e => setLink(e.target.value)} onSelect={() => check("link")} />
             </div>
           </fieldset>
 

@@ -41,11 +41,14 @@ export default {
     async create(request: Request, response: Response) {
         const {
             name,
+            nameShow,
             campus,
             type,
             latitude,
             longitude,
-            description
+            description,
+            link,
+            piso
         } = request.body;
 
         /*name.toLowerCase()
@@ -61,17 +64,22 @@ export default {
 
         const data = {
             name : name.toLowerCase(),
+            nameShow,
             campus : campus.toLowerCase(),
             type,
             latitude,
             longitude,
             description,
-            images
+            images,
+            link,
+            piso
         }
 
         const schema = Yup.object().shape({
             name: Yup.string().required('Nome obrigatório'),
+            nameShow: Yup.string().required('Nome obrigatório'),
             campus: Yup.string().required('Nome do campus obrigatório'),
+            piso: Yup.string().required('Piso da sala obrigatório'),
             type: Yup.string().required('Tipo de sala obrigatório'),
             latitude: Yup.number().required('Latitude da sala obrigatória'),
             longitude: Yup.number().required('Longitude da sala obrigatória'),

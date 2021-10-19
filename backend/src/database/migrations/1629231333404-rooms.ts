@@ -16,31 +16,43 @@ export class rooms1629231333404 implements MigrationInterface {
                 },
                 {
                     name: 'name',
-                    type: 'varchar'
+                    type: 'varchar',
+                    isNullable: false,
+                },
+                {
+                    name: 'nameShow',
+                    type: 'varchar',
+                    isNullable: false,
                 },
                 {
                     name: 'campus',
-                    type: 'varchar'
+                    type: 'varchar',
+                    isNullable: false,
                 },
                 {
                     name: 'latitude',
-                    type: 'decimal',
-                    scale: 10,
-                    precision: 2,
+                    type: 'numeric',
+                    isNullable: true,
                 },
                 {
                     name: 'longitude',
-                    type: 'decimal',
-                    scale: 10,
-                    precision: 2,
+                    type: 'numeric',
+                    isNullable: true,
                 },
                 {
-                    name: 'weight',
-                    type: 'number',
+                    name: 'type',
+                    type: 'varchar',
+                    isNullable: false,
                 },
                 {
                     name: 'description',
                     type: 'text',
+                    isNullable: false,
+                },
+                {
+                    name: 'link',
+                    type: 'varchar',
+                    isNullable: true,
                 }
             ]
         }))

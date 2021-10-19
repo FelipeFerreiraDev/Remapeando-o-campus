@@ -1,8 +1,4 @@
-import { Link, useParams, useHistory } from 'react-router-dom';
-import { useEffect } from 'react';
-import api from '../../services/api';
-import { useState } from 'react';
-
+import { Link, useHistory } from 'react-router-dom';
 import { Context } from '../../Context/AuthContext';
 import { useContext } from 'react';
 import logo from '../../assets/UenpLogo.png';
@@ -11,7 +7,6 @@ import './style.css';
 
 
 export function LandingPage() {
-    const { goBack } = useHistory();
 
     let history = useHistory();
     const { authenticated, handleLogout } = useContext(Context);
@@ -27,7 +22,7 @@ export function LandingPage() {
                 <div className="container-center">
                     <div className="container-itens">
                         <img className="img" src={logo} alt="UENP Logo" />
-                        <Link className="button-class" to={`/Map/Room/-23.1747224/-50.6700414`}>
+                        <Link className="button-class" to={`/Map/Room/-23.1497471/-49.9795701`}>
                             Jacarézinho
                         </Link>
                         <Link className="button-class" to={`/Map/Room/-23.1747224/-50.6700414`}>
@@ -60,7 +55,6 @@ export function LandingPage() {
                                 </>
                             ) : null
                         } 
-                        <button className="text" onClick={() => alert("Atendimento via email: remapeandoocampus@gmail.com")}>Ajuda</button>
                         <div className="container-atencao">
                             <p>
                                 ATENÇÃO!

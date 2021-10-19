@@ -235,6 +235,8 @@ form.create-room-form button.confirm-button:hover {
     border: 1px solid #b4b4b4;
     display: inline-block;
     width: 13px;
+    margin-top: -1px;
+    margin-left: -1px;
     height: 13px;
     position: relative;
     vertical-align: top;

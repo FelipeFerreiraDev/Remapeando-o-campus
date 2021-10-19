@@ -74,6 +74,8 @@ form.delete-room-form fieldset legend {
     border-bottom: 1px solid #D3E2E5;
     margin-bottom: 40px;
     padding-bottom: 24px;
+    font-family: 'Roboto', sans-serif;
+    font-weight: 800;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -143,6 +145,7 @@ form.delete-room-form button.confirm-button:hover {
 }
 
 .status {
+    font-family: 'Roboto', sans-serif;
     color: red;
     margin-left: 8px;
     line-height: 24px;
@@ -159,6 +162,7 @@ form.delete-room-form button.confirm-button:hover {
 }
 
 .response {
+    font-family: 'Roboto', sans-serif;
     margin-top: 44px;
     color: red;
     display: flex;

@@ -2,15 +2,16 @@ import { Map, Marker, TileLayer } from "react-leaflet";
 import L from 'leaflet';
 
 import iconMap from '../../assets/MapIcon.png';
-import { converterExibicao } from '../../components/TextFunctions/index'
 
 import './style.css';
 import { Sidebar } from "../../components/Sidebar";
 import { useEffect, useState } from "react";
 import api from "../../services/api";
-
+import { Context } from '../../Context/AuthContext';
+import { useContext } from 'react';
 import { useHistory, useParams } from 'react-router-dom';
 import { FiTrash2 } from "react-icons/fi";
+import { removerAcentos } from '../../components/TextFunctions/index'
 
 const happyMapIcon = L.icon({
   iconUrl: iconMap,
@@ -22,6 +23,10 @@ const happyMapIcon = L.icon({
 
 interface RoomProps {
   name: string;
+  nameShow: string;
+  piso: number;
+  type: string;
+  campus: string;
   latitude?: number;
   longitude?: number;
   description: string;
@@ -29,30 +34,35 @@ interface RoomProps {
     id: number;
     url: string;
   }[];
+  link: string;
 }
 
 interface RouteParamsProps {
   id: string;
+  name: string;
+  campus: string;
 }
 
 export default function RoomDetails() {
+  const { authenticated } = useContext(Context);
+
   const history = useHistory();
-  const { id } = useParams<RouteParamsProps>();
+  const { id, name, campus } = useParams<RouteParamsProps>();
   const [room, setRoom] = useState<RoomProps>();
-  const [activeImageIndex, setActiveImageIndex] = useState(0);
+  //const [activeImageIndex, setActiveImageIndex] = useState(0);
 
   useEffect(() => {
     api.get(`room/${id}`).then(response => {
       setRoom(response.data)
     });
-  }, [id]);
+  }, [id, name, campus]);
 
   if (!room) {
     return <div></div>
   }
 
   async function handleDeleteRoom() {
-    await api.delete(`/room/${id}`);
+    await api.delete(`/room/${room?.campus}/${removerAcentos(String(room?.name))}`);
     alert('Sala Deletada Com Sucesso!');
     history.push('/');
   }
@@ -64,28 +74,30 @@ export default function RoomDetails() {
         <div className="room-details">
           <div className="center-images">
             <div className="image-thumb">
-              <img src={room.image[activeImageIndex].url} alt={room?.name} />
+              <img  src={room.link} alt={room?.name} />
               <div className="images">
-                {room.image.map((image, index) => {
+                
+                {/*room.image.map((image, index) => {
                   return (
                     <button
-                      key={image.id}
+                      key={room.link}
                       className={activeImageIndex === index ? 'active' : ''}
                       type="button"
                       onClick={() => setActiveImageIndex(index)}
                     >
-                      <img src={image.url} alt={room.name} />
+                      <img src={room.link} alt={room.name} />
                     </button>
                   )
-                })}
+                })*/}
               </div>
             </div>
           </div>
 
 
           <div className="room-details-content">
-            <h1>{converterExibicao(room?.name.toString())}</h1>
-            <p>{room?.description}</p>
+            <h1 style={{borderTop: "1px solid gray", paddingTop: "50px"}}>{room?.nameShow}</h1>
+            <p><b>Tipo:</b>&nbsp;&nbsp;{room?.type} |&nbsp;<b>Piso:</b>&nbsp;&nbsp;{room?.piso}</p>
+            <p><b>Descrição:</b>&nbsp;&nbsp;{room?.description}</p>
 
             <div className="map-container">
               <Map
@@ -116,10 +128,16 @@ export default function RoomDetails() {
                 </a>
               </footer>
             </div>
-            <button type="button" className="delete" onClick={handleDeleteRoom}>
-                Deletar Sala
-                <FiTrash2 color="white" size="28" />
-            </button>
+            {
+              authenticated ? (
+                  <>
+                    <button type="button" className="delete" onClick={handleDeleteRoom}>
+                      Deletar Sala
+                      <FiTrash2 color="white" size="28" />
+                    </button>
+                  </>
+              ) : null
+            }
           </div>
         </div>
       </main>

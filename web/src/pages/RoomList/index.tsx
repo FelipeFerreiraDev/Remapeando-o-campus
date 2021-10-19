@@ -9,6 +9,9 @@ import './style.css';
 interface RoomProps {
     id: number;
     name: string;
+    nameShow: string;
+    piso: number; 
+    type: string;
     latitude?: number;
     longitude?: number;
     description: string;
@@ -16,6 +19,7 @@ interface RoomProps {
         id: number;
         url: string;
     }[];
+    link?: string;
 }
 
 export function RoomList() {
@@ -24,11 +28,12 @@ export function RoomList() {
     const [campus, setCampus] = useState('');
 
     useEffect(() => {
-        if (campus && busca) {
+        if (campus && busca && busca !== "") {
             api.get(`roomList/${campus}/${removerAcentos(busca)}`).then(response => {
                 setRooms(response.data);
             });
         }
+
     }, [busca, campus]);
 
     if (!rooms) {

@@ -21,13 +21,13 @@ export default {
         })
 
         if(!user) {
-            return response.sendStatus(401);
+            return response.status(401);
         }
 
         const isValidPassword = await bcrypt.compare(password, user.password)
 
         if(!isValidPassword) {
-            return response.sendStatus(401)
+            return response.status(401)
         }
 
         const token = jwt.sign({ id: user.id }, 'handsonRemapeandoCampus2021CC', {

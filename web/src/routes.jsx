@@ -18,7 +18,7 @@ function CustomRoute({ isPrivate, ...rest }) {
     
     if(isPrivate && !authenticated) {
          return <Redirect to="/User/Login" />
-    } else if(isPrivate && emailAuth !== 'test1@gmail.com') {
+    } else if(isPrivate && emailAuth !== 'remapeandoocampus@gmail.com') {
         return <Redirect to="/" />
     } 
 

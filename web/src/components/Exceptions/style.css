@@ -1,0 +1,43 @@
+.ExceptionLocation {
+    height: 40px;
+    background-color: #f55145;
+    opacity: 0.8;
+    position: fixed;
+    top: 0;
+    right: 0;
+    margin-top: 20px;
+    margin-right: 20px;
+    overflow: hidden;
+    z-index: 1;
+    border-radius: 5px;
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
+    font-size: 15px;
+    color: #fff;
+    font-family: 'Roboto', sans-serif;
+    padding: 10px 20px;
+    line-height: 20px;
+    animation: roll 8s ease;
+    transform: translateX(+150%);
+}
+
+@keyframes roll {
+    0% {
+        transform: translateX(+150%);
+    }
+    20% {
+        transform: translateX(0);
+    }
+    80% {
+        transform: translateX(0);
+    }
+    100% {
+        transform: translateX(+150%);
+    }
+}
+
+@media screen and (max-width: 720px) {
+    .ExceptionLocation {
+        top: 80%;
+        font-size: 15px;
+    }
+}

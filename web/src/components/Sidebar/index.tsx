@@ -22,7 +22,7 @@ export function Sidebar() {
 
     return (
         <aside className="app-sidebar-adm">
-            <button type="button" className="button-img" onClick={() => history.push("/")}>
+            <button style={{marginBottom: "20px"}} type="button" className="button-img" onClick={() => history.push("/")}>
                 <img src={logoEquipe} title="Voltar ao início" alt="Voltar" />
             </button>
             {
@@ -35,9 +35,9 @@ export function Sidebar() {
                 ) : null
             }
             
-            <a href="javascript:void(0);" className="icon2" onClick={goBack}>
+            <p className="icon2 goback" onClick={goBack}>
                 <FiArrowLeft size={24} color="#FFF" />
-            </a>
+            </p>
         </aside>
     )
 }
@@ -56,7 +56,7 @@ export function SidebarCreate() {
 
     return (
         <aside className="app-sidebar-adm">
-            <button type="button" className="button-img" onClick={() => history.push("/")}>
+            <button style={{marginBottom: "20px"}} type="button" className="button-img" onClick={() => history.push("/")}>
                 <img src={logoEquipe} title="Voltar ao início" alt="Voltar" />
             </button>
             {
@@ -69,9 +69,9 @@ export function SidebarCreate() {
                 ) : null
             }
 
-            <a href="javascript:void(0);" className="icon2" onClick={goBack}>
+            <p className="icon2 goback" onClick={goBack}>
                 <FiArrowLeft size={24} color="#FFF" />
-            </a>
+            </p>
         </aside>
     )
 }
@@ -90,7 +90,7 @@ export function SidebarDelete() {
 
     return (
         <aside className="app-sidebar-adm">
-            <button type="button" className="button-img" onClick={() => history.push("/")}>
+            <button style={{marginBottom: "20px"}}  type="button" className="button-img" onClick={() => history.push("/")}>
                 <img src={logoEquipe} title="Voltar ao início" alt="Voltar" />
             </button>
             {
@@ -103,9 +103,9 @@ export function SidebarDelete() {
                 ) : null
             }
 
-            <a href="javascript:void(0);" className="icon2" onClick={goBack}>
+            <p className="icon2 goback" onClick={goBack}>
                 <FiArrowLeft size={24} color="#FFF" />
-            </a>
+            </p>
         </aside>
     )
 }

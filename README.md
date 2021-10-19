@@ -74,9 +74,8 @@ O aplicativo foi desenvolvido usando JavaScript, TypeScript, React Js, Google Ma
 Ainda se trata de um protótipo
 
 ## ✒️ Autores
-
-[<img src="https://avatars.githubusercontent.com/u/48157305?v=4" width=115 > <br> <sub> Felipe Ferreira </sub>](https://github.com/FelipeFerreiraDev) | 
-| :---: |  
+| [<img src="https://avatars.githubusercontent.com/u/48157305?v=4" width=115><br><sub>Felipe Ferreira</sub>](https://github.com/FelipeFerreiraDev) | [<img src="https://avatars.githubusercontent.com/u/42157830?v=4" width=115><br><sub>Gabriel Lima</sub>](https://github.com/Gabriellimmaa) |
+| :---: | :---: 
 
 
 ---
